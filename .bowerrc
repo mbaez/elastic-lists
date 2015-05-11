@@ -1,0 +1,8 @@
+{
+    "directory": "./test/vendors/",
+    "analytics": false,
+    "timeout": 120000,
+    "registry": {
+        "search": ["https://bower.herokuapp.com"]
+    }
+}

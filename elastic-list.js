@@ -62,7 +62,7 @@ function ElasticList(options) {
      * Description
      */
     function getFilters() {
-        var $filters = $(".active");
+        var $filters = options.el.find(".active");
         var filters = {};
         $filters.each(function () {
             var key = $(this).parent().attr("id");
