@@ -3,12 +3,18 @@
  * @config {Jquery.El} el container of the view.
  * @config {Object} data the use to  build de view.
  * @config {function} onchange
+ * @config {String} countColumn
+ * @config {String} panelTemplate
+ * @config {String} panelHeadTemplate
+ * @config {String} panelBodyTemplate
  * @config {Object} columns
  */
 function ElasticList(options) {
     var grafo = {};
-    var globalMap = {}
-
+    var countMap = {}
+    this.panelTemplate = '<div class="panel panel-default "></div>';
+    this.panelHeadTemplate = '<div class="panel-heading"></div>';
+    this.panelBodyTemplate = '<div class="panel-body"/></div>';
     /**
      * Build a encode string.
      *
@@ -17,15 +23,16 @@ function ElasticList(options) {
      */
     function genId(value) {
         value = value.toString();
-        value = encodeURI(value);
-        value = value.trim().toLowerCase().replace(/-/g, '').replace(/\ /g, '').replace(/\./g, '')
-        value = value.replace(/\)/g, '').replace(/\(/g, '').replace(/,/g, '').replace(/\;/g, '');
-        value = value.replace(/\`/g, '').replace(/\'/g, '').replace(/\%/g, '').replace(/\#/g, '');
-        value = value.replace(/\$/g, '').replace(/\&/g, '').replace(/\*/g, '').replace(/\//g, '');
-        value = value.replace(/\!/g, '').replace(/\@/g, '').replace(/\[/g, '').replace(/\]/g, '');
-        value = value.replace(/\</g, '').replace(/\>/g, '').replace(/\"/g, '').replace(/\+/g, '');
-        value = value.replace(/\=/g, '').replace(/\_/g, '').replace(/\{/g, '').replace(/\}/g, '');
-        return value;
+        value = value.trim().toLowerCase();
+        var hash = 0,
+            i, chr, len;
+        if (value.length == 0) return hash;
+        for (i = 0, len = value.length; i < len; i++) {
+            chr = value.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
     }
 
     /**
@@ -33,7 +40,7 @@ function ElasticList(options) {
      * @returns {String} a encode string .
      */
     function getKey(group, el) {
-        return genId(parseValue(group)) + "-" + genId(parseValue(el));
+        return genId(parseValue(group)) + "X" + genId(parseValue(el));
     }
 
     /**
@@ -68,7 +75,6 @@ function ElasticList(options) {
             var key = $(this).parent().attr("id");
             var value = $(this).find("span:not(.badge)").text();
             filters[key] = value;
-
         });
         return filters;
     }
@@ -76,7 +82,7 @@ function ElasticList(options) {
     /**
      * Description
      */
-    function applyFilters($target, undo) {
+    this.applyFilters = function ($target, undo) {
         var map = {};
         var attrKey = null,
             nodes;
@@ -87,30 +93,30 @@ function ElasticList(options) {
         //si no existe ningún filtro activo
         if (attrKey == null) {
             $("li").show();
-            for (var elId in globalMap) {
-                $("span#" + elId).text(globalMap[elId]);
+            for (var elId in countMap) {
+                $("span#" + elId).text(countMap[elId]);
             }
             return;
         }
         nodes = grafo[attrKey];
-        attrKey = attrKey.split("-");
+        attrKey = attrKey.split("X");
         var targetId = $target.find('.badge').attr("id");
         var attr = attrKey[0],
             key = attrKey[1];
         //hide all elements
         options.el.find("li:not(.active)").hide();
-
         for (var i = 0; i < nodes.length; i++) {
             if (isIn(nodes[i], filters)) {
                 for (var j = 0; j < options.columns.length; j++) {
                     var nodeKey = options.columns[j].attr;
                     var elId = getKey(nodeKey, nodes[i][nodeKey]);
                     var $el = $("#" + elId).parent();
-                    map[elId] = typeof map[elId] == "undefined" ? 1 : map[elId] += 1;
+                    //map[elId] = typeof map[elId] == "undefined" ? 1 : map[elId] += 1;
+                    var count = this.count(map, elId, nodes[i]);
                     if (nodeKey != attr) {
                         $el.show();
                     }
-                    $("#" + elId).text(map[elId]);
+                    $("#" + elId).text(count);
                 }
             }
         }
@@ -122,8 +128,8 @@ function ElasticList(options) {
     /**
      * Description
      */
-    function clickHandler(e) {
-        var $target = $(this);
+    this.clickHandler = function (el) {
+        var $target = $(el);
         var undo = false;
         var clazz = $target.attr("class");
         if (clazz.indexOf("active") >= 0) {
@@ -133,7 +139,7 @@ function ElasticList(options) {
             $target.addClass("active");
             $target.show();
         }
-        applyFilters($target, undo);
+        this.applyFilters($target, undo);
     }
 
     /**
@@ -142,10 +148,10 @@ function ElasticList(options) {
     this.buildContainer = function () {
         var len = parseInt(12 / this.columns.length);
         var $container = $("<div class='list-container'></div>");
-        var $panel = $('<div class="panel panel-default "></div>');
+        var $panel = $(this.panelTemplate);
         $container.addClass("col-md-" + len + "");
-        var $head = $('<div class="panel-heading"></div>');
-        var $body = $('<div class="panel-body"/></div>');
+        var $head = $(this.panelHeadTemplate);
+        var $body = $(this.panelBodyTemplate);
         for (var j = 0; j < this.columns.length; j++) {
             var attr = this.columns[j].attr;
             var $ulContainer = $container.clone();
@@ -166,8 +172,23 @@ function ElasticList(options) {
     /**
      * Description
      */
+    this.count = function (countMap, key, node) {
+        var hasCountColumn = typeof this.countColumn == "undefined" ? false : true;
+        if (typeof countMap[key] == "undefined") {
+            countMap[key] = hasCountColumn ? node[this.countColumn] : 1;
+            return countMap[key];
+        }
+
+        countMap[key] += hasCountColumn ? node[this.countColumn] : 1;
+        return countMap[key];
+    }
+
+
+    /**
+     * Description
+     */
     this.buildList = function () {
-        var map = {};
+        var count = 0;
         for (var i = 0; i < this.data.length; i++) {
             for (var j = 0; j < this.columns.length; j++) {
                 var attr = this.columns[j].attr;
@@ -175,8 +196,8 @@ function ElasticList(options) {
                 value = parseValue(value);
                 var key = value.toString().toLowerCase();
                 var elKey = getKey(attr, key);
-                if (typeof map[elKey] == "undefined") {
-                    map[elKey] = 1;
+                if (typeof countMap[elKey] == "undefined") {
+                    count = this.count(countMap, elKey, this.data[i]);
                     grafo[elKey] = [];
                     var $ul = this.el.find("#" + attr);
                     var $li = $("<li class='list-group-item'></li>");
@@ -184,26 +205,28 @@ function ElasticList(options) {
                     var $badge = $span.clone();
                     $badge.addClass('badge');
                     $badge.attr("id", elKey);
-                    $badge.text("1");
+                    $badge.text(count);
                     $span.text(value);
                     $li.append($badge);
                     $li.append($span);
                     $ul.append($li);
                 } else {
-                    map[elKey] += 1;
-                    this.el.find("#" + elKey).text(map[elKey]);
+                    count = this.count(countMap, elKey, this.data[i]);
+                    this.el.find("#" + elKey).text(count);
                 }
                 grafo[elKey].push(this.data[i]);
             }
         }
-        globalMap = map;
     }
 
     /**
      * Description
      */
     this.bindEvents = function () {
-        this.el.find("li").on("click", clickHandler);
+        var thiz = this;
+        this.el.find("li").on("click", function (e) {
+            thiz.clickHandler(this);
+        });
     }
 
     /**

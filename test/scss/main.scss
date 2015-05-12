@@ -1,2 +1,7 @@
 // ESTILOS EXTERNOS
 @import "../vendors/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.list-container ul {
+    max-height: 370px;
+    overflow-y: auto;
+}
