@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>Elastic-lists by mbaez</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,40 +9,46 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
+</head>
+
+<body>
     <section class="page-header">
-      <h1 class="project-name">Elastic-lists</h1>
-      <h2 class="project-tagline">A javascript library to build elastic lists</h2>
-      <a href="https://github.com/mbaez/elastic-lists" class="btn">View on GitHub</a>
-      <a href="https://github.com/mbaez/elastic-lists/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/mbaez/elastic-lists/tarball/master" class="btn">Download .tar.gz</a>
+        <h1 class="project-name">Elastic-lists</h1>
+        <h2 class="project-tagline">A javascript library to build elastic lists</h2>
+        <a href="https://github.com/mbaez/elastic-lists" class="btn">View on GitHub</a>
+        <a href="https://github.com/mbaez/elastic-lists/zipball/master" class="btn">Download .zip</a>
+        <a href="https://github.com/mbaez/elastic-lists/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
-      <h1>
+        <h1>
 <a id="elastic-lists" class="anchor" href="#elastic-lists" aria-hidden="true"><span class="octicon octicon-link"></span></a>elastic-lists</h1>
 
-<p>A simple javascript library to build elastic lists.Elastic lists allow to navigate large, multi-dimensional info spaces with just a few clicks, never letting you run into situations with zero results.</p>
+        <p>A simple javascript library to build elastic lists.Elastic lists allow to navigate large, multi-dimensional info spaces with just a few clicks, never letting you run into situations with zero results.</p>
 
-<h2>
+        <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>Below is quick example how to use ElasticList:</p>
+        <p>Below is quick example how to use ElasticList:</p>
 
-<p><em>Download the latest version library and include it in your html.</em></p>
+        <p><em>Download the latest version library and include it in your html.</em>
+        </p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/jquery.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
-&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/elastic-list.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+        <div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/jquery.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/elastic-list.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre>
+        </div>
 
-<p><em>Add a container in your html :</em></p>
+        <p><em>Add a container in your html :</em>
+        </p>
 
-<div class="highlight highlight-html"><pre>...
-&lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>view-container<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>container<span class="pl-pds">'</span></span>&gt;&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+        <div class="highlight highlight-html"><pre>...
+&lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>view-container<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>container<span class="pl-pds">'</span></span>&gt;&lt;/<span class="pl-ent">div</span>&gt;</pre>
+        </div>
 
-<p><em>This code build a view with six columns</em></p>
+        <p><em>This code build a view with six columns</em>
+        </p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-c">//instance elastic list class</span>
+        <div class="highlight highlight-javascript"><pre><span class="pl-c">//instance elastic list class</span>
 <span class="pl-k">var</span> view <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ElasticList</span>({
   el<span class="pl-k">:</span> $(<span class="pl-s"><span class="pl-pds">"</span>#view-container<span class="pl-pds">"</span></span>),
   data<span class="pl-k">:</span> novelPrizeJson, <span class="pl-c">//the json data</span>
@@ -67,17 +74,37 @@
     title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>,
     attr<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>
   }]
-});</pre></div>
+});</pre>
+        </div>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/mbaez/elastic-lists">Elastic-lists</a> is maintained by <a href="https://github.com/mbaez">mbaez</a>.</span>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+        <h1>
+<a id="running-demo" class="anchor" href="#running-demo" aria-hidden="true"><span class="octicon octicon-link"></span></a>running demo</h1>
+        <h2>
+<a id="simple-demo" class="anchor" href="#simple-demo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Simple Demo</h2>
+    </section>
+    <iframe src="simple.html"></iframe>
+    <section class="main-content">
+        <h2>
+<a id="avanced-demo" class="anchor" href="#avanced-demo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demo with count column</h2>
+    </section>
+    <iframe src="count-column.html"></iframe>
+    <section class="main-content">
+        <footer class="site-footer">
+            <span class="site-footer-owner"><a href="https://github.com/mbaez/elastic-lists">Elastic-lists</a> is maintained by <a href="https://github.com/mbaez">mbaez</a>.</span>
+
+            <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+        </footer>
 
     </section>
 
-  
-  </body>
-</html>
+    <style rel="stylesheet" type="text/css">
+        iframe {
+            height: 455px;
+            width: 100%;
+            border: 0px;
+        }
+    </style>
+</body>
 
+</html>

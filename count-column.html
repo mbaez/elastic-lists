@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body class="container">
+    <br/>
+    <div class="row" id="running-demo-count"></div>
+    <script type="application/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="application/javascript" src="./javascripts/elastic-list.js"></script>
+    <script type="application/javascript" src="./javascripts/data.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css" media="screen">
+    <script>
+    $(function () {
+        var view1 = new ElasticList({
+            el: $("#running-demo-count"),
+            data: dataCount,
+            onchange: function (filters) {
+                console.info(filters);
+            },
+            countColumn: "total",
+            columns: [
+                {
+                    title: "Presentacion",
+                    attr: "csv_presentacion"
+            }, {
+                    title: "Marca",
+                    attr: "csv_marca"
+            }, {
+                    title: "Modalidad",
+                    attr: "csv_modalidad"
+            }]
+        });
+    });
+</script>
+</body>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="application/javascript" src="./javascripts/elastic-list.js"></script>
+    <script type="application/javascript" src="./javascripts/data.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+    <script>
+        $(function () {
+            var view = new ElasticList({
+                el: $("#running-demo-simple"),
+                data: dataElastic,
+                onchange: function (filters) {
+                    console.info(filters);
+                },
+                columns: [
+                    {
+                        title: "País",
+                        attr: "country"
+            }, {
+                        title: "Genero",
+                        attr: "gender"
+            }, {
+                        title: "Año",
+                        attr: "year"
+            }, {
+                        title: "Categoría",
+                        attr: "category"
+            }, {
+                        title: "Ciudad",
+                        attr: 'city'
+            }, {
+                        title: "Universidad",
+                        attr: "name"
+            }]
+            });
+        });
+    </script>
+</head>
+
+<body class="container">
+    <br/>
+    <div class="row" id="running-demo-simple"></div>
+</body>
