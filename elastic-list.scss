@@ -1,0 +1,14 @@
+.list-container ul {
+    max-height: 370px;
+    overflow-y: auto;
+}
+
+.hide-element {
+    height: 4px;
+    padding: 0px;
+    background: #f4f1f1;
+    cursor: not-allowed;
+    span{
+        display: none;
+    }
+}

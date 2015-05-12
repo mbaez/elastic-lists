@@ -12,9 +12,23 @@
 function ElasticList(options) {
     var grafo = {};
     var countMap = {}
+
+    /**
+     * @field
+     */
     this.panelTemplate = '<div class="panel panel-default "></div>';
+    /**
+     * @field
+     */
     this.panelHeadTemplate = '<div class="panel-heading"></div>';
+    /**
+     * @field
+     */
     this.panelBodyTemplate = '<div class="panel-body"/></div>';
+    /**
+     * @field
+     */
+    this.hideClass = "hide-element";
     /**
      * Build a encode string.
      *
@@ -92,7 +106,7 @@ function ElasticList(options) {
         }
         //si no existe ningún filtro activo
         if (attrKey == null) {
-            $("li").show();
+            this.el.find("li").removeClass(this.hideClass);
             for (var elId in countMap) {
                 $("span#" + elId).text(countMap[elId]);
             }
@@ -104,17 +118,16 @@ function ElasticList(options) {
         var attr = attrKey[0],
             key = attrKey[1];
         //hide all elements
-        options.el.find("li:not(.active)").hide();
+        options.el.find("li:not(.active)").addClass(this.hideClass);
         for (var i = 0; i < nodes.length; i++) {
             if (isIn(nodes[i], filters)) {
                 for (var j = 0; j < options.columns.length; j++) {
                     var nodeKey = options.columns[j].attr;
                     var elId = getKey(nodeKey, nodes[i][nodeKey]);
                     var $el = $("#" + elId).parent();
-                    //map[elId] = typeof map[elId] == "undefined" ? 1 : map[elId] += 1;
                     var count = this.count(map, elId, nodes[i]);
                     if (nodeKey != attr) {
-                        $el.show();
+                        $el.removeClass(this.hideClass);
                     }
                     $("#" + elId).text(count);
                 }
@@ -132,12 +145,14 @@ function ElasticList(options) {
         var $target = $(el);
         var undo = false;
         var clazz = $target.attr("class");
-        if (clazz.indexOf("active") >= 0) {
+        if (clazz.indexOf(this.hideClass) >= 0) {
+            return;
+        } else if (clazz.indexOf("active") >= 0) {
             $target.removeClass("active");
             undo = true;
         } else {
             $target.addClass("active");
-            $target.show();
+            $target.removeClass(this.hideClass);
         }
         this.applyFilters($target, undo);
     }
@@ -160,8 +175,7 @@ function ElasticList(options) {
             //var $ulBody = $body.clone();
             $ulhead.text(this.columns[j].title);
             var $ul = $("<ul class='list-group'></ul>");
-            $ul.attr("id", attr);
-            //$ulBody.append($ul);
+            $ul.attr("id", genId(attr));
             $ulPanel.append($ulhead);
             $ulPanel.append($ul);
             $ulContainer.append($ulPanel);
@@ -178,11 +192,9 @@ function ElasticList(options) {
             countMap[key] = hasCountColumn ? node[this.countColumn] : 1;
             return countMap[key];
         }
-
         countMap[key] += hasCountColumn ? node[this.countColumn] : 1;
         return countMap[key];
     }
-
 
     /**
      * Description
@@ -199,7 +211,7 @@ function ElasticList(options) {
                 if (typeof countMap[elKey] == "undefined") {
                     count = this.count(countMap, elKey, this.data[i]);
                     grafo[elKey] = [];
-                    var $ul = this.el.find("#" + attr);
+                    var $ul = this.el.find("#" + genId(attr));
                     var $li = $("<li class='list-group-item'></li>");
                     var $span = $("<span></span>");
                     var $badge = $span.clone();
@@ -230,11 +242,14 @@ function ElasticList(options) {
     }
 
     /**
-     * @constructor
      * @param {Object} options Description
      * @config {Jquery.El} el container of the view.
      * @config {Object} data the use to  build de view.
      * @config {function} onchange
+     * @config {String} countColumn
+     * @config {String} panelTemplate
+     * @config {String} panelHeadTemplate
+     * @config {String} panelBodyTemplate
      * @config {Object} columns
      */
     this.initialize = function (options) {

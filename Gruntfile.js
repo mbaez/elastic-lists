@@ -10,7 +10,8 @@ module.exports = function (grunt) {
                     sourcemap: false
                 },
                 files: {
-                    'test/css/main.css': 'test/scss/main.scss'
+                    'test/css/main.css': 'test/scss/main.scss',
+                    'elastic-list.css' :'elastic-list.scss'
                 }
             }
         },
