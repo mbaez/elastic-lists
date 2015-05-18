@@ -1,5 +1,5 @@
 # elastic-lists
-A simple javascript library to build elastic lists. Elastic lists allow to navigate large, multi-dimensional info spaces with just a few clicks, never letting you run into situations with zero results.
+A simple javascript library to build elastic lists. Elastic lists allow to navigate large, multi-dimensional info spaces with just a few clicks, never letting you run into situations with zero results. See the running demo [here](http://mbaez.github.io/elastic-lists/).
 
 ##Usage
 Below is quick example how to use ElasticList:
@@ -49,3 +49,8 @@ var view = new ElasticList({
   }]
 });
 ```
+
+##Want to contribute?
+
+If you've found a bug or have a great idea for new feature let me know by [adding your suggestion]
+(http://github.com/mbaez/elastic-lists/issues/new) to [issues list](https://github.com/mbaez/elastic-lists/issues).
