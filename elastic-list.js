@@ -3,6 +3,7 @@
  * @config {Jquery.El} el container of the view.
  * @config {Object} data the use to  build de view.
  * @config {function} onchange
+ * @config {boolean} hasFilter
  * @config {String} countColumn
  * @config {String} panelTemplate
  * @config {String} panelHeadTemplate
@@ -57,6 +58,10 @@ function ElasticList(options) {
         return genId(parseValue(group)) + "X" + genId(parseValue(el));
     }
 
+    function genColumnId(attr) {
+        return attr+"X"+genId(attr);
+    }
+
     /**
      *
      * @param {type} value Description
@@ -108,7 +113,7 @@ function ElasticList(options) {
         if (attrKey == null) {
             this.el.find("li").removeClass(this.hideClass);
             for (var elId in countMap) {
-                $("span#" + elId).text(countMap[elId]);
+                this.el.find("#" + elId).text(countMap[elId]);
             }
             return;
         }
@@ -154,6 +159,12 @@ function ElasticList(options) {
             $target.addClass("active");
             $target.removeClass(this.hideClass);
         }
+        
+        if(typeof this.hasFilter !== "undefined"&& this.hasFilter){
+            this.el.find("input").each(function(){
+                $(this).val("");
+            });
+        }
         this.applyFilters($target, undo);
     }
 
@@ -163,6 +174,7 @@ function ElasticList(options) {
     this.buildContainer = function () {
         var len = parseInt(12 / this.columns.length);
         var $container = $("<div class='list-container'></div>");
+        var $input = $("<input type='text' class='elastic-filter'>");
         var $panel = $(this.panelTemplate);
         $container.addClass("col-md-" + len + "");
         var $head = $(this.panelHeadTemplate);
@@ -175,9 +187,18 @@ function ElasticList(options) {
             //var $ulBody = $body.clone();
             $ulhead.text(this.columns[j].title);
             var $ul = $("<ul class='list-group'></ul>");
-            $ul.attr("id", genId(attr) + "X" + attr);
+            $ul.attr("id", genColumnId(attr));
             $ul.attr("data-name", attr);
             $ulPanel.append($ulhead);
+            //if the filter is allowed
+            if (typeof this.hasFilter != "undefined" && this.hasFilter) {
+                var $ulFilter = $input.clone();
+                $ulFilter.attr("placeholder", this.columns[j].title);
+                $ulPanel.append($ulFilter);
+                var $style = $("<style></style>");
+                $style.attr("class", genColumnId(attr));
+                $ulPanel.append($style);
+            }
             $ulPanel.append($ul);
             $ulContainer.append($ulPanel);
             this.el.append($ulContainer);
@@ -212,14 +233,16 @@ function ElasticList(options) {
                 if (typeof countMap[elKey] == "undefined") {
                     count = this.count(countMap, elKey, this.data[i]);
                     grafo[elKey] = [];
-                    var $ul = this.el.find("#" + genId(attr)+"X"+attr);
+                    var $ul = this.el.find("#" + genColumnId(attr));
                     var $li = $("<li class='list-group-item'></li>");
                     var $span = $("<div></div>");
                     var $badge = $span.clone();
                     $badge.addClass('badge');
                     $badge.attr("id", elKey);
                     $badge.text(count);
+                    $li.attr("data-value", value.toString().toLowerCase());
                     $span.text(value);
+                    $span.addClass("elastic-data");
                     $li.append($badge);
                     $li.append($span);
                     $ul.append($li);
@@ -240,6 +263,36 @@ function ElasticList(options) {
         this.el.find("li").on("click", function (e) {
             thiz.clickHandler(this);
         });
+
+        if (typeof this.hasFilter !== "undefined" && this.hasFilter) {
+            this.el.find("input.elastic-filter").on("keyup", function (e) {
+                thiz.findData(e);
+            });
+        }
+    }
+
+    /**
+     * @function
+     *
+     * @public
+     */
+    this.findData = function (event) {
+        event.stopPropagation();
+        var $input = $(event.target);
+        var $column = $input.parent().find("ul");
+        var columnId = $column.attr("id");
+        // Dependiente del input que es tipeado, setea los valores.
+        var data = $input.val().trim();
+        var $style = this.el.find("." + columnId);
+        if (data.length > 0) {
+            data = data.toLocaleLowerCase();
+            var rule = " ul#" + columnId + ' li[data-value*="' + data + '"]{display:block;} ';
+            rule += " ul#" + columnId + ' li:not([data-value*="' + data + '"]){display:none;}';
+            $style.html(rule);
+        } else {
+            $style.html("");
+        }
+        return;
     }
 
     /**
@@ -247,6 +300,7 @@ function ElasticList(options) {
      * @config {Jquery.El} el container of the view.
      * @config {Object} data the use to  build de view.
      * @config {function} onchange
+     * @config {boolean} hasFilter
      * @config {String} countColumn
      * @config {String} panelTemplate
      * @config {String} panelHeadTemplate
