@@ -8,12 +8,15 @@
     padding-top: 10px;
     padding-right: 15px;
     height: 41px;
-    -webkit-transition: height 1s, padding-top 1s, background-color 1s;
-    transition: height 1s, padding-top 1s, background-color 1s;
+    -webkit-transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+    transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+    div.elastic-data {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     div {
-        opacity: 1;
-        -webkit-transition: opacity 2s linear;
-        transition: opacity 2s linear;
+        display: block;
     }
 }
 
@@ -25,17 +28,18 @@
     background-color: #f4f1f1;
     height: 3px;
     padding-top: 0px;
+    padding-bottom: 0px;
     overflow: hidden;
-    -webkit-transition: height 1s, padding-top 1s, background-color 1s;
-    transition: height 1s, padding-top 1s, background-color 1s;
 }
 
 .list-group-item.hide-element div {
-    opacity: 0;
-    -webkit-transition: opacity 0.5s linear;
-    transition: opacity 0.5s linear;
+    display: none;
 }
 
 .list-container .hide-element {
     cursor: not-allowed;
+}
+
+.elastic-filter {
+    width: 100%;
 }
