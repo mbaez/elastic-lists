@@ -86,8 +86,8 @@ function ElasticList(options) {
         var $filters = options.el.find(".active");
         var filters = {};
         $filters.each(function () {
-            var key = $(this).parent().attr("id");
-            var value = $(this).find("span:not(.badge)").text();
+            var key = $(this).parent().attr("data-name");
+            var value = $(this).find(":not(.badge)").text();
             filters[key] = value;
         });
         return filters;
@@ -175,7 +175,8 @@ function ElasticList(options) {
             //var $ulBody = $body.clone();
             $ulhead.text(this.columns[j].title);
             var $ul = $("<ul class='list-group'></ul>");
-            $ul.attr("id", genId(attr));
+            $ul.attr("id", genId(attr) + "X" + attr);
+            $ul.attr("data-name", attr);
             $ulPanel.append($ulhead);
             $ulPanel.append($ul);
             $ulContainer.append($ulPanel);
@@ -211,9 +212,9 @@ function ElasticList(options) {
                 if (typeof countMap[elKey] == "undefined") {
                     count = this.count(countMap, elKey, this.data[i]);
                     grafo[elKey] = [];
-                    var $ul = this.el.find("#" + genId(attr));
+                    var $ul = this.el.find("#" + genId(attr)+"X"+attr);
                     var $li = $("<li class='list-group-item'></li>");
-                    var $span = $("<span></span>");
+                    var $span = $("<div></div>");
                     var $badge = $span.clone();
                     $badge.addClass('badge');
                     $badge.attr("id", elKey);
