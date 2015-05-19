@@ -115,6 +115,9 @@ function ElasticList(options) {
             for (var elId in countMap) {
                 this.el.find("#" + elId).text(countMap[elId]);
             }
+            if (typeof options.onchange != "undefined") {
+                options.onchange({});
+            }
             return;
         }
         nodes = grafo[attrKey];
@@ -159,7 +162,7 @@ function ElasticList(options) {
             $target.addClass("active");
             $target.removeClass(this.hideClass);
         }
-        
+
         if(typeof this.hasFilter !== "undefined"&& this.hasFilter){
             this.el.find("input").each(function(){
                 $(this).val("");
