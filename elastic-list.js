@@ -9,6 +9,7 @@
  * @config {String} panelHeadTemplate
  * @config {String} panelBodyTemplate
  * @config {Object} columns
+ * @config {Object} defaultValue
  */
 function ElasticList(options) {
     var grafo = {};
@@ -59,7 +60,7 @@ function ElasticList(options) {
     }
 
     function genColumnId(attr) {
-        return attr+"X"+genId(attr);
+        return attr + "X" + genId(attr);
     }
 
     /**
@@ -141,9 +142,11 @@ function ElasticList(options) {
                 }
             }
         }
-        if (typeof options.onchange != "undefined") {
+        if (typeof options.onchange != "undefined" && typeof this.setingDefault == "undefined" || !this.setingDefault) {
             options.onchange(filters);
         }
+
+        this.setingDefault = false;
     }
 
     /**
@@ -163,13 +166,33 @@ function ElasticList(options) {
             $target.removeClass(this.hideClass);
         }
 
-        if(typeof this.hasFilter !== "undefined"&& this.hasFilter){
-            this.el.find("input").each(function(){
+        if (typeof this.hasFilter !== "undefined" && this.hasFilter) {
+            this.el.find("input").each(function () {
                 $(this).val("");
             });
         }
         this.applyFilters($target, undo);
     }
+
+    this.setSelected = function () {
+        if (typeof this.defaultValue == "undefined") {
+            return;
+        }
+
+        for (var attr in this.defaultValue) {
+            var value = this.defaultValue[attr];
+            value = parseValue(value);
+            var key = value.toString().toLowerCase();
+            var elKey = getKey(attr, key);
+            console.log(elKey);
+            var $target = $("#" + elKey);
+            if ($target.length > 0) {
+                this.setingDefault = true;
+                $target.parent().click();
+
+            }
+        }
+    };
 
     /**
      * Description
@@ -309,6 +332,7 @@ function ElasticList(options) {
      * @config {String} panelHeadTemplate
      * @config {String} panelBodyTemplate
      * @config {Object} columns
+     * @config {Object} defaultValue
      */
     this.initialize = function (options) {
         for (var attr in options) {
@@ -317,6 +341,7 @@ function ElasticList(options) {
         this.buildContainer();
         this.buildList();
         this.bindEvents();
+        this.setSelected();
     }
 
     this.initialize(options);
