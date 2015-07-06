@@ -16,21 +16,26 @@ function ElasticList(options) {
     var countMap = {}
 
     /**
+     * template of the container of the elastic list.
      * @field
      */
     this.panelTemplate = '<div class="panel panel-default "></div>';
     /**
+     * template of the header of each column of the elastic list.
      * @field
      */
     this.panelHeadTemplate = '<div class="panel-heading"></div>';
     /**
+     * template of the container of the elastic list
      * @field
      */
     this.panelBodyTemplate = '<div class="panel-body"/></div>';
     /**
+     * the name of the css class which it's appended to all element hidden in the list
      * @field
      */
     this.hideClass = "hide-element";
+
     /**
      * Build a encode string.
      *
@@ -52,13 +57,19 @@ function ElasticList(options) {
     }
 
     /**
+     * Build a compose string in the follow format : "encode frist string" + "X" + "enconde second string"
+     * @param {Sting} first the prefix of the enconde string.
+     * @param {Sting} second the sufix of the enconde string.
+     * @returns {String} a encode string .
+     */
+    function getKey(first, second) {
+        return genId(parseValue(first)) + "X" + genId(parseValue(second));
+    }
+
+    /**
      * Build a compose string.
      * @returns {String} a encode string .
      */
-    function getKey(group, el) {
-        return genId(parseValue(group)) + "X" + genId(parseValue(el));
-    }
-
     function genColumnId(attr) {
         return attr + "X" + genId(attr);
     }
@@ -73,7 +84,7 @@ function ElasticList(options) {
     }
 
     /**
-     * Description
+     * Check if the selected filters is in the current node.
      */
     function isIn(node, filters) {
         var resp = true;
@@ -86,14 +97,14 @@ function ElasticList(options) {
     }
 
     /**
-     * Description
+     * Get the selection of each columns
      */
     function getFilters() {
         var $filters = options.el.find(".active");
         var filters = {};
         $filters.each(function () {
             var key = $(this).parent().attr("data-name");
-            var value = $(this).find(":not(.badge)").text();
+            var value = $(this).find(":not(.badge)").parent().attr("data-value");
             filters[key] = value;
         });
         return filters;
@@ -184,7 +195,6 @@ function ElasticList(options) {
             value = parseValue(value);
             var key = value.toString().toLowerCase();
             var elKey = getKey(attr, key);
-            console.log(elKey);
             var $target = $("#" + elKey);
             if ($target.length > 0) {
                 this.setingDefault = true;
@@ -266,7 +276,14 @@ function ElasticList(options) {
                     $badge.addClass('badge');
                     $badge.attr("id", elKey);
                     $badge.text(count);
+                    // adding the true value of the element
                     $li.attr("data-value", value.toString().toLowerCase());
+                    // if the current column has a custom formatter
+                    if (typeof this.columns[j].formatter == "function") {
+                        value = this.columns[j].formatter(value);
+                    }
+                    // adding the formatted value of the string
+                    $li.attr("data-formatted", value.toString().toLowerCase());
                     $span.text(value);
                     $span.addClass("elastic-data");
                     $li.append($badge);
@@ -312,8 +329,8 @@ function ElasticList(options) {
         var $style = this.el.find("." + columnId);
         if (data.length > 0) {
             data = data.toLocaleLowerCase();
-            var rule = " ul#" + columnId + ' li[data-value*="' + data + '"]{display:block;} ';
-            rule += " ul#" + columnId + ' li:not([data-value*="' + data + '"]){display:none;}';
+            var rule = " ul#" + columnId + ' li[data-formatted*="' + data + '"]{display:block;} ';
+            rule += " ul#" + columnId + ' li:not([data-formatted*="' + data + '"]){display:none;}';
             $style.html(rule);
         } else {
             $style.html("");
