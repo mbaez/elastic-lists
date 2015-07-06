@@ -5,11 +5,18 @@ $(function () {
         onchange: function (filters) {
             console.info(filters);
         },
+        hasFilter: true,
         countColumn: "total",
         columns: [
             {
                 title: "Presentacion",
-                attr: "csv_presentacion"
+                attr: "csv_presentacion",
+                formatter: function (value) {
+                    if (value == "UNI") {
+                        return "Uni formater value";
+                    }
+                    return value;
+                }
             }, {
                 title: "Marca",
                 attr: "csv_marca"
