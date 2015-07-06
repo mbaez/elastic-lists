@@ -3,33 +3,35 @@
     overflow-y: auto;
 }
 
-.list-container .list-group-item {
-    background-color: white;
-    padding-top: 10px;
-    padding-right: 15px;
-    height: 41px;
-    -webkit-transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
-    transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
-    div.elastic-data {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+.list-container {
+    .list-group-item {
+        background-color: white;
+        padding-right: 15px;        
+        font-size: 12px;
+        padding-top: 5px;
+        height: 30px;
+        -webkit-transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+        transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+        
+        div.elastic-data {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        div {
+            display: block;
+        }
     }
-    div {
-        display: block;
+    .list-group-item.active {
+        background: #337ab7;
     }
-}
-
-.list-container .list-group-item.active {
-    background: #337ab7;
 }
 
 .list-group-item.hide-element {
     background-color: #f4f1f1;
     height: 3px;
-    padding-top: 0px;
-    padding-bottom: 0px;
     overflow: hidden;
+    padding: 0px;
 }
 
 .list-group-item.hide-element div {
