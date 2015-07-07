@@ -153,11 +153,11 @@ function ElasticList(options) {
                 }
             }
         }
-        if (typeof options.onchange != "undefined" && typeof this.setingDefault == "undefined" || !this.setingDefault) {
+        if (typeof options.onchange != "undefined" && (typeof this.settingDefault == "undefined" || !this.settingDefault) ) {
             options.onchange(filters);
         }
 
-        this.setingDefault = false;
+        this.settingDefault = false;
     }
 
     /**
@@ -197,7 +197,7 @@ function ElasticList(options) {
             var elKey = getKey(attr, key);
             var $target = $("#" + elKey);
             if ($target.length > 0) {
-                this.setingDefault = true;
+                this.settingDefault = true;
                 $target.parent().click();
 
             }
