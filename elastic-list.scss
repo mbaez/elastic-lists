@@ -1,47 +1,45 @@
+$active-bg:#337ab7;
+$hide-bg: #f4f1f1;
+$list-bg:white;
 .list-container ul {
-    max-height: 370px;
-    overflow-y: auto;
+	max-height: 370px;
+	overflow-y: auto;
 }
-
 .list-container {
-    .list-group-item {
-        background-color: white;
-        padding-right: 15px;        
-        font-size: 12px;
-        padding-top: 5px;
-        height: 30px;
-        -webkit-transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
-        transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
-        
-        div.elastic-data {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        div {
-            display: block;
-        }
-    }
-    .list-group-item.active {
-        background: #337ab7;
-    }
+	.list-group-item {
+		background-color: $list-bg;
+		padding-right: 15px;
+		font-size: 12px;
+		padding-top: 5px;
+		height: 30px;
+		cursor: pointer;
+		-webkit-transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+		transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+		div.elastic-data {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		div {
+			display: block;
+		}
+	}
+	.list-group-item.active {
+		background: $active-bg;
+	}
 }
-
 .list-group-item.hide-element {
-    background-color: #f4f1f1;
-    height: 3px;
-    overflow: hidden;
-    padding: 0px;
+	background-color: $hide-bg;
+	height: 3px;
+	overflow: hidden;
+	padding: 0px;
 }
-
 .list-group-item.hide-element div {
-    display: none;
+	display: none;
 }
-
 .list-container .hide-element {
-    cursor: not-allowed;
+	cursor: not-allowed;
 }
-
 .elastic-filter {
-    width: 100%;
+	width: 100%;
 }
