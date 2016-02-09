@@ -1,0 +1,46 @@
+.list-container ul {
+  max-height: 370px;
+  overflow-y: auto;
+}
+
+.list-container .list-group-item {
+  background-color: white;
+  padding-right: 15px;
+  font-size: 12px;
+  padding-top: 5px;
+  height: 30px;
+  -webkit-transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+  transition: height 0.25s, padding-top 0.25s, background-color 0.25s;
+}
+.list-container .list-group-item div.elastic-data {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-container .list-group-item div {
+  display: block;
+}
+.list-container .list-group-item.active {
+  background: #337ab7;
+}
+
+.list-group-item.hide-element {
+  background-color: #f4f1f1;
+  height: 3px;
+  overflow: hidden;
+  padding: 0px;
+}
+
+.list-group-item.hide-element div {
+  display: none;
+}
+
+.list-container .hide-element {
+  cursor: not-allowed;
+}
+
+.elastic-filter {
+  width: 100%;
+}
+
+/*# sourceMappingURL=elastic-list.css.map */
