@@ -1,4 +1,6 @@
 /**
+ * A simple javascript library to build elastic lists. Elastic lists allow to navigate large, multi-dimensional info 
+ * spaces with just a few clicks, never letting you run into situations with zero results.
  * @param {Object} options Description
  * @config {Jquery.El} el container of the view.
  * @config {Object} data the use to  build de view.
@@ -98,7 +100,7 @@ function ElasticList(options) {
 	}
 
 	/**
-	 * Get the selection of each columns
+	 * Retorna los filtros activos de cada columna.
 	 */
 	function getFilters() {
 		var $filters = options.el.find(".active");
@@ -112,7 +114,7 @@ function ElasticList(options) {
 	}
 
 	/**
-	 * Description
+	 * Este método se encarga de aplicar los filtros a los datos del elastic list.
 	 */
 	this.applyFilters = function ($target, undo) {
 		var map = {};
@@ -162,9 +164,10 @@ function ElasticList(options) {
 	}
 
 	/**
-	 * Description
+	 * Se encarga de manejar el evento on-click disparado desde una de las filas del elastic list.
 	 */
 	this.clickHandler = function (el) {
+		var thiz = this;
 		var $target = $(el);
 		var undo = false;
 		var clazz = $target.attr("class");
@@ -181,11 +184,16 @@ function ElasticList(options) {
 		if (typeof this.hasFilter !== "undefined" && this.hasFilter) {
 			this.el.find("input").each(function () {
 				$(this).val("");
+				thiz.cleanFilters();
 			});
 		}
 		this.applyFilters($target, undo);
 	}
 
+	/**
+	 * Si el atributo defaultValue se encuentra definido, este se pre-selecciona en la
+	 * lista.
+	 */
 	this.setSelected = function () {
 		if (typeof this.defaultValue == "undefined") {
 			return;
@@ -206,11 +214,14 @@ function ElasticList(options) {
 	};
 
 	/**
-	 * Description
+	 * Método principal que se encarga de procesar los datos y constuir los contenedores que 
+	 * definen la lista elástica.
+	 * @function
+	 * @private
 	 */
 	this.buildContainer = function () {
 		//var len = parseInt(12 / this.columns.length);
-		var len = this.align === 'horizontal' ? 12 : parseInt(12 / this.columns.length);
+		var len = this.align === 'vertical' ? 12 : parseInt(12 / this.columns.length);
 		var $container = $("<div class='list-container'></div>");
 		var $input = $("<input type='text' class='elastic-filter'>");
 		var $panel = $(this.panelTemplate);
@@ -244,7 +255,8 @@ function ElasticList(options) {
 	}
 
 	/**
-	 * Description
+	 * Se encarga de obtener el total de datos aosociados a la columna. 
+	 * Este número se pude obtener de la columna countColumn si se encuentra especificada.
 	 */
 	this.count = function (countMap, key, node) {
 		var hasCountColumn = typeof this.countColumn == "undefined" ? false : true;
@@ -257,7 +269,10 @@ function ElasticList(options) {
 	}
 
 	/**
-	 * Description
+	 * Método principal que se encarga de procesar los datos y constuir las columnas que 
+	 * definen la lista elástica.
+	 * @function
+	 * @private
 	 */
 	this.buildList = function () {
 		var count = 0;
@@ -301,7 +316,9 @@ function ElasticList(options) {
 	}
 
 	/**
-	 * Description
+	 * Se encarga de asociar los eventos a los componentes del elastic list
+	 * @function
+	 * @private
 	 */
 	this.bindEvents = function () {
 		var thiz = this;
@@ -317,9 +334,13 @@ function ElasticList(options) {
 	}
 
 	/**
+	 * Se encarga de ocultar las filas que no coinciden con el criterio de busqueda del 
+	 * input de filtrado de las columnas. Se utiliza CSS para ocultar/mostrar los elementos
+	 * debido a que es más eficiente que hide y show de jquery.
 	 * @function
-	 *
-	 * @public
+	 * @private
+	 * @param {Event} event referencia al objeto evento de jquery iniciado por el keyup en el input
+	 * de cada columna.
 	 */
 	this.findData = function (event) {
 		event.stopPropagation();
@@ -341,6 +362,18 @@ function ElasticList(options) {
 	}
 
 	/**
+	 * Este método se encarga de limpliar los criterios del filtrados establecidos por el input de filtrado.
+	 * Se encarga de limpiar las reglas css establecidas en el filtrado.
+	 */
+	this.cleanFilters = function () {
+		this.el.find("style").each(function () {
+			$(this).html("");
+		});
+	}
+
+
+	/**
+	 * Constructor of class.
 	 * @param {Object} options Description
 	 * @config {Jquery.El} el container of the view.
 	 * @config {Object} data the use to  build de view.
