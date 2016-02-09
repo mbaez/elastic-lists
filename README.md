@@ -9,6 +9,10 @@ Below is quick example how to use ElasticList:
 ```html
 <script src="js/jquery.js"></script>
 <script src="js/elastic-list.js"></script>
+
+<link href="boostrap.css" rel="stylesheet">
+<link href="elastic-list.css" rel="stylesheet">
+
 ```
 
 *Add a container in your html :*
@@ -48,6 +52,78 @@ var view = new ElasticList({
     attr: "name"
   }]
 });
+```
+
+##Options
+The available configuration options from a elastic list:
+
+#### options.el
+Type: `Jquery.Dom`
+
+Container where the list will build. 
+
+
+#### options.data
+Type: `Array`
+
+The array containing the data in json
+
+#### options.columns
+Type: `Array`
+
+Array that contains the settings of the columns, which will be visible
+
+```javascript
+columns:[{
+    title: "Country",//the column title
+    attr: "col_country" //the json key attribute
+  },
+  ...
+]
+```
+
+#### options[onchange] \(activeFilters)
+Type: `Function`
+
+Function called when the filters in the elastic list are activated. 
+
+```javascript
+  onchange: function (activeFilters) {
+    console.info(activeFilters);
+  },
+```
+
+
+#### options[hasFilter]
+Type: `Boolean`
+Default: False
+If true, builds inputs at the top of the columns for local searches. Local search uses CSS selectors, instead of Jquery show / hide for performance improved
+
+#### options[aling]
+Type: `String`
+Default: 'horizontal'
+
+Sets the alignment of columns.
+
+```javascript
+  aling:'horizontal | vertical'
+```
+
+#### options[countColumn]
+Type: `String`
+
+Defines the name of the column that has the total precalculated for your data.
+
+#### options[defaultValue]
+Type: `Object`
+
+Values that will be selected when the list was built.
+
+```javascript
+  defaultValue:{
+    "col_country": "Paraguay"
+    ...
+  },
 ```
 
 ##Want to contribute?
