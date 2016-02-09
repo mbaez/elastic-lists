@@ -1,3 +1,4 @@
+dist
 test/vendors
 node_modules
 .sass-cache
