@@ -5,13 +5,13 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		sass: {
 			dist: {
-				options: {
-					style: 'expanded',
-					sourcemap: false
-				},
+	/*			options: {
+				style: 'expanded',
+				sourcemap: false
+			},*/
 				files: {
 					'dist/css/main.css': 'test/scss/main.scss',
-					'dist/elastic-list.css': 'elastic-list.scss'
+					'dist/elastic-list.css': './elastic-list.scss'
 				}
 			}
 		},
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
 				options: {
 					livereload: true
 				},
-				files: ['test/**/*', '*.js'],
+				files: ['test/**/*', '*.js', '*.scss'],
 				tasks: ['default']
 			}
 		},
