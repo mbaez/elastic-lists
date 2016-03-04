@@ -1,6 +1,6 @@
 {
     "name": "elastic-list",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "authors": ["Maximiliano Báez González <mxbg.py@gmail.com>"],
     "description": "A javascript library to build elastic lists",
     "private": true,
