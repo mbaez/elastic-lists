@@ -124,14 +124,15 @@ Default: `False`
 
 If true, builds inputs at the top of the columns for local searches. Local search uses CSS selectors, instead of Jquery show / hide for performance improved
 
-#### options[aling]
+
+#### options[align]
 Type: `String`
 Default: `'horizontal'`
 
 Sets the alignment of columns.
 
 ```javascript
-  aling:'horizontal | vertical'
+  align:'horizontal | vertical'
 ```
 
 #### options[countColumn]
