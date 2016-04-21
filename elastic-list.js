@@ -1,5 +1,5 @@
 /**
- * A simple javascript library to build elastic lists. Elastic lists allow to navigate large, 
+ * A simple javascript library to build elastic lists. Elastic lists allow to navigate large,
  * multi-dimensional info spaces with just a few clicks, never letting you run into situations
  * with zero results.
  * Repository home page: https://github.com/mbaez/elastic-lists
@@ -75,7 +75,7 @@ ElasticBuilder.prototype.initialize = function (options) {
 }
 
 /**
- * This function will be called before the search. This event is triggered when the column input 
+ * This function will be called before the search. This event is triggered when the column input
  * text is change (key typed)
  * @param {String} value the search criteria typed
  * @param {String} columnAttr the attribute name of the column
@@ -261,7 +261,7 @@ ElasticBuilder.prototype.setSelected = function (options) {
 };
 
 /**
- * Método principal que se encarga de procesar los datos y constuir los contenedores que 
+ * Método principal que se encarga de procesar los datos y constuir los contenedores que
  * definen la lista elástica.
  * @function
  * @private
@@ -302,7 +302,7 @@ ElasticBuilder.prototype.buildContainer = function () {
 }
 
 /**
- * Se encarga de obtener el total de datos aosociados a la columna. 
+ * Se encarga de obtener el total de datos aosociados a la columna.
  * Este número se pude obtener de la columna countColumn si se encuentra especificada.
  */
 ElasticBuilder.prototype.count = function (countMap, key, node) {
@@ -316,7 +316,7 @@ ElasticBuilder.prototype.count = function (countMap, key, node) {
 }
 
 /**
- * Método principal que se encarga de procesar los datos y constuir las columnas que 
+ * Método principal que se encarga de procesar los datos y constuir las columnas que
  * definen la lista elástica.
  * @function
  * @private
@@ -383,7 +383,7 @@ ElasticBuilder.prototype.bindEvents = function () {
 }
 
 /**
- * Se encarga de ocultar las filas que no coinciden con el criterio de busqueda del 
+ * Se encarga de ocultar las filas que no coinciden con el criterio de busqueda del
  * input de filtrado de las columnas. Se utiliza CSS para ocultar/mostrar los elementos
  * debido a que es más eficiente que hide y show de jquery.
  * @function
@@ -414,7 +414,7 @@ ElasticBuilder.prototype.findData = function (event) {
 }
 
 /**
- * Este método se encarga de limpliar los criterios del filtrados establecidos por el input 
+ * Este método se encarga de limpliar los criterios del filtrados establecidos por el input
  * de filtrado.
  * Se encarga de limpiar las reglas css establecidas en el filtrado.
  */
@@ -424,7 +424,7 @@ ElasticBuilder.prototype.cleanFilters = function () {
     });
 }
 
-/** 
+/**
  * This class is responsible to build the elastic list view and expose all public methods
  * Constructor of class.
  * @param {Object} options Description
@@ -468,4 +468,6 @@ ElasticList.prototype.setSelected = function (options) {
 ElasticList.prototype.clean = function (options) {
     var slecteds = this.getFilters();
     this.builder.setSelected(slecteds);
+    this.builder.settingDefault = false;
+
 }
